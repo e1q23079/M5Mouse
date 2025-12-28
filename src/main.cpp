@@ -53,6 +53,9 @@ void setup() {
 
 // メインループ関数
 void loop() {
+    // IMUセンサーのデータを更新
+    M5.update();
+
     // センサーからデータを取得
     M5.Imu.getAccelData(&ax, &ay, &az);
     M5.Imu.getGyroData(&gx, &gy, &gz);
@@ -81,6 +84,14 @@ void loop() {
         //  移動量が閾値を超えた場合にマウスを移動
         if (abs(x) > 5 || abs(y) > 5) {
             bleMouse.move(x, y);  // マウスを移動
+        }
+        //  ボタンA
+        if (M5.BtnA.wasPressed()) {
+            bleMouse.move(0, 0, -1);  // ホイールを上にスクロール
+        }
+        //  ボタンB
+        if (M5.BtnB.wasPressed()) {
+            bleMouse.move(0, 0, 1);  // ホイールを下にスクロール
         }
     } else {
         if (bleStatus) {
