@@ -33,7 +33,8 @@ void showDisplay(const char text[], const char text2[]) {
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setCursor(5, 5);
     M5.Lcd.printf(
-        "DeviceName:%s\n\n [%s]\n ・ M5->TOP\n ・ BtnA:Next\n ・ BtnB:Back\n "
+        "DeviceName:%s\n\n [%s]\n ・ M5->TOP\n ・ BtnA:LClick(DOWN)\n ・ "
+        "BtnB:RClick(UP)\n "
         "・ "
         "PowerBtn:Mode",
         text, text2);
