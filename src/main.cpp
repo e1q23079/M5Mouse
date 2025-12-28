@@ -3,6 +3,10 @@
 #include <M5Unified.h>
 #include <MadgwickAHRS.h>
 
+// マウス感度設定
+#define MOUSE_SENSITIVITY_X 5.0  // （左右移動）感度
+#define MOUSE_SENSITIVITY_Y 3.0  // （上下移動）感度
+
 // Madgwickフィルタのインスタンスを作成
 Madgwick filter;
 
@@ -75,8 +79,8 @@ void loop() {
     delay(10);  // 10ms待機（100Hz）
 
     // マウスの移動量を計算
-    int x = -1 * (yaw - preYaw) * 5;
-    int y = (roll - preRoll) * 3;
+    int x = -1 * (yaw - preYaw) * MOUSE_SENSITIVITY_X;
+    int y = (roll - preRoll) * MOUSE_SENSITIVITY_Y;
 
     // BLEマウスが接続されている場合
     if (bleMouse.isConnected()) {
@@ -93,11 +97,11 @@ void loop() {
         }
         //  ボタンA
         if (M5.BtnA.wasPressed()) {
-            bleMouse.move(0, 0, -1);  // ホイールを上にスクロール
+            bleMouse.move(0, 0, -1);  // ホイールを下にスクロール
         }
         //  ボタンB
         if (M5.BtnB.wasPressed()) {
-            bleMouse.move(0, 0, 1);  // ホイールを下にスクロール
+            bleMouse.move(0, 0, 1);  // ホイールを上にスクロール
         }
         //  電源ボタン
         if (M5.Power.getKeyState() == 2) {
