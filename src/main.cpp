@@ -57,6 +57,8 @@ void setup() {
 
     // 少し待機してから開始
     delay(1000);
+
+    showDisplay("M5Mouse", "Disconnected");
 }
 
 // メインループ関数
