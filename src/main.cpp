@@ -18,13 +18,25 @@ float preRoll = 0, prePitch = 0, preYaw = 0;
 // カウンタ
 int count = 0;
 
+// BLE接続状態
+bool bleStatus = false;
+
+// ディスプレイに表示する関数
+void showDisplay(const char text[], const char text2[]) {
+    M5.Lcd.fillScreen(BLACK);
+    M5.Lcd.setCursor(5, 5);
+    M5.Lcd.printf("%s\n%s", text, text2);
+}
+
 // セットアップ関数
 void setup() {
     // M5StickCの初期化
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.setTextSize(2);
-    M5.Lcd.println("M5Mouse");
+
+    // 初期メッセージの表示
+    showDisplay("M5Mouse", "Initializing...");
 
     // BLEマウスの初期化
     bleMouse.begin();
@@ -61,19 +73,30 @@ void loop() {
 
     // BLEマウスが接続されている場合
     if (bleMouse.isConnected()) {
-        // マウスを移動
+        if (!bleStatus) {
+            bleStatus = true;
+            showDisplay("M5Mouse",
+                        "Connected");  // 接続中メッセージを表示
+        }
+        //  移動量が閾値を超えた場合にマウスを移動
         if (abs(x) > 5 || abs(y) > 5) {
-            bleMouse.move(x, y);
+            bleMouse.move(x, y);  // マウスを移動
+        }
+    } else {
+        if (bleStatus) {
+            bleStatus = false;
+            showDisplay("M5Mouse",
+                        "Disconnected");  // 接続待機メッセージを表示
         }
     }
 
-    // 結果を表示
-    M5.Lcd.fillScreen(BLACK);
-    M5.Lcd.setCursor(2, 2);
-    M5.Lcd.printf("Roll:  %.2f\n", roll);
-    M5.Lcd.printf("Pitch: %.2f\n", pitch);
-    M5.Lcd.printf("Yaw:   %.2f\n", yaw);
-    M5.Lcd.printf("x:%d y:%d\n", x, y);
+    // // 結果を表示
+    // M5.Lcd.fillScreen(BLACK);
+    // M5.Lcd.setCursor(2, 2);
+    // M5.Lcd.printf("Roll:  %.2f\n", roll);
+    // M5.Lcd.printf("Pitch: %.2f\n", pitch);
+    // M5.Lcd.printf("Yaw:   %.2f\n", yaw);
+    // M5.Lcd.printf("x:%d y:%d\n", x, y);
 
     // 前回の値を記録
     if (count % 10 == 0) {
@@ -81,5 +104,5 @@ void loop() {
         prePitch = pitch;
         preYaw = yaw;
     }
-    count++;
+    count++;  // カウンタをインクリメント
 }
