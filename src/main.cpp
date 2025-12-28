@@ -21,6 +21,9 @@ int count = 0;
 // BLE接続状態
 bool bleStatus = false;
 
+// マウス状態
+bool mouseStatus = false;
+
 // ディスプレイに表示する関数
 void showDisplay(const char text[], const char text2[]) {
     M5.Lcd.fillScreen(BLACK);
@@ -82,8 +85,10 @@ void loop() {
                         "Connected");  // 接続中メッセージを表示
         }
         //  移動量が閾値を超えた場合にマウスを移動
-        if (abs(x) > 5 || abs(y) > 5) {
-            bleMouse.move(x, y);  // マウスを移動
+        if (mouseStatus) {  // マウス有効状態のとき
+            if (abs(x) > 5 || abs(y) > 5) {
+                bleMouse.move(x, y);  // マウスを移動
+            }
         }
         //  ボタンA
         if (M5.BtnA.wasPressed()) {
@@ -92,6 +97,10 @@ void loop() {
         //  ボタンB
         if (M5.BtnB.wasPressed()) {
             bleMouse.move(0, 0, 1);  // ホイールを下にスクロール
+        }
+        //  電源ボタン
+        if (M5.Power.getKeyState() == 2) {
+            mouseStatus = !mouseStatus;
         }
     } else {
         if (bleStatus) {
