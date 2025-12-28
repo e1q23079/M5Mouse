@@ -56,8 +56,8 @@ void loop() {
     delay(10);  // 10ms待機（100Hz）
 
     // マウスの移動量を計算
-    int x = -1 * (yaw - preYaw);
-    int y = roll - preRoll;
+    int x = -1 * (yaw - preYaw) * 2;
+    int y = (roll - preRoll) * 2;
 
     // BLEマウスが接続されている場合
     if (bleMouse.isConnected()) {
