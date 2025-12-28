@@ -26,7 +26,7 @@ int count = 0;
 bool bleStatus = false;
 
 // マウス状態
-bool mouseStatus = false;
+bool mouseStatus = true;
 
 // ディスプレイに表示する関数
 void showDisplay(const char text[], const char text2[]) {
@@ -94,14 +94,31 @@ void loop() {
             if (abs(x) > 5 || abs(y) > 5) {
                 bleMouse.move(x, y);  // マウスを移動
             }
-        }
-        //  ボタンA
-        if (M5.BtnA.wasPressed()) {
-            bleMouse.move(0, 0, -1);  // ホイールを下にスクロール
-        }
-        //  ボタンB
-        if (M5.BtnB.wasPressed()) {
-            bleMouse.move(0, 0, 1);  // ホイールを上にスクロール
+            //  ボタンA
+            if (M5.BtnA.wasPressed()) {
+                bleMouse.click(MOUSE_LEFT);  // 左ボタンクリック
+            } else if (M5.BtnA.isHolding()) {
+                bleMouse.press(MOUSE_LEFT);  // 左ボタンを押下
+            } else {
+                bleMouse.release(MOUSE_LEFT);  // 左ボタンを解放
+            }
+            //  ボタンB
+            if (M5.BtnB.wasPressed()) {
+                bleMouse.click(MOUSE_RIGHT);  // 右ボタンクリック
+            } else if (M5.BtnB.isHolding()) {
+                bleMouse.press(MOUSE_RIGHT);  // 右ボタンを押下
+            } else {
+                bleMouse.release(MOUSE_RIGHT);  // 右ボタンを解放
+            }
+        } else {
+            //  ボタンA
+            if (M5.BtnA.wasPressed()) {
+                bleMouse.move(0, 0, -1);  // ホイールを下にスクロール
+            }
+            //  ボタンB
+            if (M5.BtnB.wasPressed()) {
+                bleMouse.move(0, 0, 1);  // ホイールを上にスクロール
+            }
         }
         //  電源ボタン
         if (M5.Power.getKeyState() == 2) {
