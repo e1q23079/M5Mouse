@@ -62,7 +62,9 @@ void loop() {
     // BLEマウスが接続されている場合
     if (bleMouse.isConnected()) {
         // マウスを移動
-        bleMouse.move(x, y);
+        if (abs(x) > 5 || abs(y) > 5) {
+            bleMouse.move(x, y);
+        }
     }
 
     // 結果を表示
