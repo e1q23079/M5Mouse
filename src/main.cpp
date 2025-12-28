@@ -12,7 +12,7 @@ BleMouse bleMouse("M5Mouse");
 float ax, ay, az;  // 加速度データ
 float gx, gy, gz;  // 角速度データ
 
-// 前回のオイラー角（デバッグ用）
+// 前回のオイラー角
 float preRoll = 0, prePitch = 0, preYaw = 0;
 
 // カウンタ
