@@ -8,6 +8,12 @@ Madgwick filter;
 float ax, ay, az;  // 加速度データ
 float gx, gy, gz;  // 角速度データ
 
+// 前回のオイラー角（デバッグ用）
+float preRoll = 0, prePitch = 0, preYaw = 0;
+
+// カウンタ
+int count = 0;
+
 // セットアップ関数
 void setup() {
     // M5StickCの初期化
@@ -42,10 +48,22 @@ void loop() {
 
     delay(10);  // 10ms待機（100Hz）
 
+    int x = yaw - preYaw;
+    int y = roll - preRoll;
+
     // 結果を表示
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setCursor(2, 2);
     M5.Lcd.printf("Roll:  %.2f\n", roll);
     M5.Lcd.printf("Pitch: %.2f\n", pitch);
     M5.Lcd.printf("Yaw:   %.2f\n", yaw);
+    M5.Lcd.printf("x:%d y:%d\n", x, y);
+
+    // 前回の値を記録
+    if (count % 10 == 0) {
+        preRoll = roll;
+        prePitch = pitch;
+        preYaw = yaw;
+    }
+    count++;
 }
