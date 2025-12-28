@@ -7,11 +7,14 @@
 #define MOUSE_SENSITIVITY_X 5.0  // （左右移動）感度
 #define MOUSE_SENSITIVITY_Y 3.0  // （上下移動）感度
 
+// デバイス名
+#define DEVICE_NAME "M5Mouse"
+
 // Madgwickフィルタのインスタンスを作成
 Madgwick filter;
 
 // BLEマウスのインスタンスを作成
-BleMouse bleMouse("M5Mouse");
+BleMouse bleMouse(DEVICE_NAME);
 
 float ax, ay, az;  // 加速度データ
 float gx, gy, gz;  // 角速度データ
@@ -29,7 +32,7 @@ bool bleStatus = false;
 bool mouseStatus = true;
 
 // ディスプレイに表示する関数
-void showDisplay(const char text[], const char text2[]) {
+void showDisplay(const char text[]) {
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setCursor(5, 5);
     M5.Lcd.printf(
@@ -37,7 +40,7 @@ void showDisplay(const char text[], const char text2[]) {
         "BtnB:RClick(UP)\n "
         "・ "
         "PowerBtn:Mode",
-        text, text2);
+        DEVICE_NAME, text);
 }
 
 // セットアップ関数
@@ -48,7 +51,7 @@ void setup() {
     M5.Lcd.setTextSize(2);
 
     // 初期メッセージの表示
-    showDisplay("M5Mouse", "Initializing...");
+    showDisplay("Initializing...");
 
     // BLEマウスの初期化
     bleMouse.begin();
@@ -62,7 +65,7 @@ void setup() {
     // 少し待機してから開始
     delay(1000);
 
-    showDisplay("M5Mouse", "Disconnected");
+    showDisplay("Disconnected");
 }
 
 // メインループ関数
@@ -92,8 +95,7 @@ void loop() {
     if (bleMouse.isConnected()) {
         if (!bleStatus) {
             bleStatus = true;
-            showDisplay("M5Mouse",
-                        "Connected");  // 接続中メッセージを表示
+            showDisplay("Connected");  // 接続中メッセージを表示
         }
         //  移動量が閾値を超えた場合にマウスを移動
         if (mouseStatus) {  // マウス有効状態のとき
@@ -133,8 +135,7 @@ void loop() {
     } else {
         if (bleStatus) {
             bleStatus = false;
-            showDisplay("M5Mouse",
-                        "Disconnected");  // 接続待機メッセージを表示
+            showDisplay("Disconnected");  // 接続待機メッセージを表示
         }
     }
 
