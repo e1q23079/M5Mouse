@@ -28,7 +28,8 @@ bool mouseStatus = false;
 void showDisplay(const char text[], const char text2[]) {
     M5.Lcd.fillScreen(BLACK);
     M5.Lcd.setCursor(5, 5);
-    M5.Lcd.printf("%s\n%s\nM5->TOP\nBtnA:Next\nBtnB:Back\n", text, text2);
+    M5.Lcd.printf("%s\n%s\nM5->TOP\nBtnA:Next\nBtnB:Back\nPowerBtn:Mouse Mode",
+                  text, text2);
 }
 
 // セットアップ関数
