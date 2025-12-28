@@ -1,9 +1,13 @@
 #include <Arduino.h>
+#include <BleMouse.h>
 #include <M5Unified.h>
 #include <MadgwickAHRS.h>
 
 // Madgwickフィルタのインスタンスを作成
 Madgwick filter;
+
+// BLEマウスのインスタンスを作成
+BleMouse bleMouse("M5Mouse");
 
 float ax, ay, az;  // 加速度データ
 float gx, gy, gz;  // 角速度データ
@@ -20,7 +24,10 @@ void setup() {
     M5.begin();
     M5.Lcd.setRotation(1);
     M5.Lcd.setTextSize(2);
-    M5.Lcd.println("Madgwick Filter Demo");
+    M5.Lcd.println("M5Mouse");
+
+    // BLEマウスの初期化
+    bleMouse.begin();
 
     // センサーの初期化
     M5.Imu.begin();
@@ -48,8 +55,15 @@ void loop() {
 
     delay(10);  // 10ms待機（100Hz）
 
-    int x = yaw - preYaw;
+    // マウスの移動量を計算
+    int x = -1 * (yaw - preYaw);
     int y = roll - preRoll;
+
+    // BLEマウスが接続されている場合
+    if (bleMouse.isConnected()) {
+        // マウスを移動
+        bleMouse.move(x, y);
+    }
 
     // 結果を表示
     M5.Lcd.fillScreen(BLACK);
