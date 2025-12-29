@@ -124,12 +124,14 @@ void loop() {
                 bleMouse.move(0, 0, -1);  // ホイールを下にスクロール
             } else if (M5.BtnA.isHolding()) {
                 bleMouse.move(0, 0, -1);  // ホイールを下にスクロール
+                delay(50);
             }
             //  ボタンB
             if (M5.BtnB.wasPressed()) {
                 bleMouse.move(0, 0, 1);  // ホイールを上にスクロール
             } else if (M5.BtnB.isHolding()) {
                 bleMouse.move(0, 0, 1);  // ホイールを上にスクロール
+                delay(50);
             }
         }
         //  電源ボタン
